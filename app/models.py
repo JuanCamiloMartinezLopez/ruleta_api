@@ -8,11 +8,15 @@ class EstadoRuleta(str, Enum):
     CERRADA = "cerrada"
     ABIERTA = "abierta"
 
+class EstadoApuesta(str, Enum):
+    PENDIENTE = "pendiente"
+    GANADA = "ganada"
+    PERDIDA = "perdida"
+
 
 class TipoApuesta(str, Enum):
     NUMERO = "numero"
     COLOR = "color"
-
 
 class ColorApuesta(str, Enum):
     ROJO = "rojo"
@@ -35,12 +39,12 @@ class Apuesta(SQLModel, table=True):
     numero_apostado: Optional[int] = Field(default=None, nullable=True)
     color_apostado: Optional[ColorApuesta] = Field(default=ColorApuesta.ROJO, nullable=True)
     monto: float = Field(ge=1, le=10000)
-    estado: str = Field(default="pendiente")
+    estado: Optional[EstadoApuesta] = Field(default=EstadoApuesta.PENDIENTE, nullable=True)
     ganancia: float = Field(default=0.0)
 
 class CrearApuesta(BaseModel):
     ruleta_id:int
-    tipo_apuesta: TipoApuesta
+    tipo_apuesta: Optional[TipoApuesta]
     numero_apostado:Optional[int]
     color_apostado:Optional[ColorApuesta]
     monto:float
